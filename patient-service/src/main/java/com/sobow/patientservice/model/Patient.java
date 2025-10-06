@@ -6,10 +6,10 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.PrePersist;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.UUID;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,27 +18,28 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
+@Builder
+@AllArgsConstructor
 public class Patient {
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
     
-    @NotNull
+    @Column(nullable = false)
     private String name;
     
-    @NotNull
-    @Email
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     private String email;
     
-    @NotNull
+    @Column(nullable = false)
     private String address;
     
-    @NotNull
+    @Column(nullable = false)
     private LocalDate dateOfBirth;
     
-    @NotNull
+
+    @Column(nullable = false)
     private LocalDate registrationDate;
     
     @PrePersist

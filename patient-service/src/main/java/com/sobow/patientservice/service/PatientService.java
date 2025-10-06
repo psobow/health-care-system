@@ -1,5 +1,6 @@
 package com.sobow.patientservice.service;
 
+import com.sobow.patientservice.dto.PatientRequestDTO;
 import com.sobow.patientservice.dto.PatientResponseDTO;
 import com.sobow.patientservice.mapper.PatientMapper;
 import com.sobow.patientservice.model.Patient;
@@ -20,5 +21,9 @@ public class PatientService {
                        .toList();
     }
     
+    public PatientResponseDTO create(PatientRequestDTO dto) {
+        Patient patient = patientRepository.save(PatientMapper.toEntity(dto));
+        return PatientMapper.toDTO(patient);
+    }
     
 }
