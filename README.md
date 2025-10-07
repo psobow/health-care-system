@@ -42,12 +42,13 @@ communication, and cloud deployment.
 
 ## 🏗️ Development Architecture (Docker Network)
 
+- API Gateway — routes client requests, applies rate limiting & auth filters
 - Auth Service — handles user authentication & JWT validation
 - Patient Service — CRUD operations & patient events (Kafka producer)
 - Billing Service — gRPC server for billing operations
 - Analytics Service — Kafka consumer for patient/billing analytics
 - Notification Service — Kafka consumer for notifications
-- API Gateway — routes client requests, applies rate limiting & auth filters
+
 
 
 ```mermaid
@@ -68,7 +69,7 @@ graph LR
   UI -->|HTTP requests| GW
 
   %% Gateway -> Services
-  GW -->|REST: login / validate JWT| AUTH
+  GW -->|login / authorization| AUTH
   GW -->|REST: patient CRUD| PAT
 
   %% Inter-service comms
@@ -115,12 +116,12 @@ graph LR
   ALB -->|forward / route| GW
 
   %% Gateway -> Services
-  GW -->|REST: login / validate JWT| AUTH
+  GW -->|REST: login / authorization| AUTH
   GW -->|REST: patient CRUD| PAT
 
   %% Inter-service communication
   PAT -->|gRPC client to billing| BILL
-  PAT -->|Kafka producer: patient.events| MSK
+  PAT -->|publish: patient.events| MSK
 
   %% Event consumers
   MSK -->|consumer| ANA

@@ -38,8 +38,7 @@ public class Patient {
     @Column(nullable = false)
     private LocalDate dateOfBirth;
     
-
-    @Column(nullable = false)
+    @Column(nullable = false, updatable = false)
     private LocalDate registrationDate;
     
     @PrePersist
