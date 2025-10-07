@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -45,5 +46,11 @@ public class PatientController {
     ) {
         PatientResponseDTO updated = patientService.update(uuid, dto);
         return ResponseEntity.ok(updated);
+    }
+    
+    @DeleteMapping("/{uuid}")
+    public ResponseEntity<Void> deletePatient(@PathVariable @NotNull UUID uuid) {
+        patientService.deleteById(uuid);
+        return ResponseEntity.noContent().build();
     }
 }
