@@ -9,4 +9,13 @@ Content-Type: application/json
   "dateOfBirth": "1999-01-01"
 }
 
-###
+### POST create with duplicate email
+POST http://localhost:4000/patients
+Content-Type: application/json
+
+{
+  "name": "Patryk Sobow",
+  "email": "john.doe@example.com",
+  "address": "main street 1",
+  "dateOfBirth": "1999-01-01"
+}

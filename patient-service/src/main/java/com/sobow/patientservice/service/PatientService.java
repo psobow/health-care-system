@@ -2,6 +2,7 @@ package com.sobow.patientservice.service;
 
 import com.sobow.patientservice.dto.PatientRequestDTO;
 import com.sobow.patientservice.dto.PatientResponseDTO;
+import com.sobow.patientservice.exception.EmailAlreadyExistsException;
 import com.sobow.patientservice.mapper.PatientMapper;
 import com.sobow.patientservice.model.Patient;
 import com.sobow.patientservice.repository.PatientRepository;
@@ -22,6 +23,10 @@ public class PatientService {
     }
     
     public PatientResponseDTO create(PatientRequestDTO dto) {
+        if (patientRepository.existsByEmail(dto.email())) {
+            throw new EmailAlreadyExistsException("A patient with this email already exists: " + dto.email());
+        }
+        
         Patient patient = patientRepository.save(PatientMapper.toEntity(dto));
         return PatientMapper.toDTO(patient);
     }
