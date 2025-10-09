@@ -1,22 +1,40 @@
 services:
 
+  patient-service:
+    build:
+      context: . # project root
+      dockerfile: patient-service/Dockerfile
+    image: patient-service:local
+    depends_on: [ db ]
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/postgres
+      SPRING_DATASOURCE_USERNAME: admin
+      SPRING_DATASOURCE_PASSWORD: password
+      SPRING_JPA_HIBERNATE_DDL_AUTO: create-drop
+      SPRING_JPA_DEFER_DATASOURCE_INITIALIZATION: true
+      SPRING_SQL_INIT_MODE: always
+    ports:
+      - "4000:4000"
+    restart: no
+
   db:
     image: postgres:17.5-alpine
     restart: always
     # set shared memory limit when using docker compose
     shm_size: 128mb
     ports:
-      - 5432:5432
+      - "5432:5432"
     volumes:
       - postgres-health-care:/var/lib/postgresql/data
     environment:
-      POSTGRES_PASSWORD: changemeinprod!
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password
 
   adminer:
     image: adminer
     restart: always
     ports:
-      - 8888:8080
+      - "8888:8080"
 
 volumes:
   postgres-health-care:
