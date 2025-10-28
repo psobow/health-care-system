@@ -6,14 +6,16 @@ WORKDIR /app
 COPY pom.xml .
 COPY patient-service/pom.xml patient-service/pom.xml
 
-# prefetch deps for this module
-RUN mvn -B -q -f /app/pom.xml -pl patient-service -am dependency:go-offline
+# pre-fetch dependencies, cached via BuildKit
+RUN --mount=type=cache,target=/root/.m2 \
+     mvn -B -q -f /app/pom.xml -pl patient-service -am dependency:go-offline
 
 # copy sources of the module
 COPY patient-service/src patient-service/src
 
-# build only the module
-RUN mvn -B -q -f /app/pom.xml -pl patient-service -am -DskipTests package
+# Build only patient-service, skipping tests; reuse cached ~/.m2
+RUN --mount=type=cache,target=/root/.m2 \
+     mvn -B -q -f /app/pom.xml -pl patient-service -am -DskipTests package
 
 
 # Runtime stage
